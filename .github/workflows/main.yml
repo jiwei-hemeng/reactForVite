@@ -1,34 +1,51 @@
-name: build and deploy
+# 将静态内容部署到 GitHub Pages 的简易工作流程
+name: Deploy static content to Pages
+
 on:
+  # 仅在推送到默认分支时运行。
   push:
-    branches:
-      - main # main 分支有 push 行为时就触发这个 action
+    branches: ['main']
+
+  # 这个选项可以使你手动在 Action tab 页面触发工作流
+  workflow_dispatch:
+
+# 设置 GITHUB_TOKEN 的权限，以允许部署到 GitHub Pages。
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 允许一个并发的部署
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
 jobs:
-  build-deploy:
+  # 单次部署的工作描述
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      # 下载仓库代码
-      - uses: actions/checkout@v2
-      # 缓存依赖
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v1
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
         with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      # 安装依赖
-      - run: yarn
-      # 打包构建
-      - run: yarn build
-        env:
-          CI: false
-      # 发布到 GitHub Pages
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v2
-        env:
-          PERSONAL_TOKEN: ${{ secrets.ACCESS_TOKEN }} # 访问秘钥
-          PUBLISH_BRANCH: gh-pages # 推送分支
-          PUBLISH_DIR: ./dist # 部署目录
+          node-version: 18
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          # Upload dist repository
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
