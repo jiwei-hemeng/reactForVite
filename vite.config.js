@@ -1,24 +1,26 @@
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
 import externalGlobals from "rollup-plugin-external-globals";
-export default defineConfig({
-  resolve: {
-    alias: {
-      "@": "/src/", //格式一定要写对喽不然没有代码提示或者报错
+export default ({ mode }) => {
+  return {
+    resolve: {
+      alias: {
+        "@": "/src/", //格式一定要写对喽不然没有代码提示或者报错
+      },
     },
-  },
-  publicDir: "/vite-react-app",
-  plugins: [react(), visualizer({ open: true })],
-  build: {
-    rollupOptions: {
-      external: ["react", "react-dom"],
-      plugins: [
-        externalGlobals({
-          react: "React",
-          "react-dom": "ReactDOM",
-        }),
-      ],
+    base: mode === "production" ? "/vite-react-app" : "/",
+    plugins: [react(), visualizer({ open: true })],
+    build: {
+      rollupOptions: {
+        external: ["react", "react-dom"],
+        plugins: [
+          externalGlobals({
+            react: "React",
+            "react-dom": "ReactDOM",
+          }),
+        ],
+      },
     },
-  },
-});
+  };
+};
