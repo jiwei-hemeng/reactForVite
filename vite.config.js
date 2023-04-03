@@ -8,6 +8,7 @@ export default defineConfig({
       "@": "/src/", //格式一定要写对喽不然没有代码提示或者报错
     },
   },
+  publicDir: "/vite-react-app",
   plugins: [react(), visualizer({ open: true })],
   build: {
     rollupOptions: {
