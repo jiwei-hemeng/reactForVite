@@ -18,6 +18,7 @@ export default ({ mode }) => {
           externalGlobals({
             react: "React",
             "react-dom": "ReactDOM",
+            "react-router-dom": "ReactRouterDOM",
           }),
         ],
       },
