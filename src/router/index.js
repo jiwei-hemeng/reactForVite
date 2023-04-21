@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { lazy } from "react";
-const router = [
+export const router = [
   {
     path: "/",
     auth: false,
@@ -17,5 +17,3 @@ const router = [
     element: lazy(() => import("@/pages/login.jsx")),
   },
 ];
-
-export { router };
