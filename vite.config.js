@@ -9,8 +9,12 @@ export default ({ mode }) => {
         "@": "/src/", //格式一定要写对喽不然没有代码提示或者报错
       },
     },
-    base: mode === "production" ? "/vite-react-app" : "/",
-    plugins: [react(), visualizer({ open: true })],
+    // base: mode === "production" ? "/vite-react-app" : "/",
+    base: mode === "production" ? "./" : "./",
+    plugins: [
+      react(),
+      visualizer({ open: true }),
+    ],
     build: {
       rollupOptions: {
         external: ["react", "react-dom"],
@@ -18,7 +22,6 @@ export default ({ mode }) => {
           externalGlobals({
             react: "React",
             "react-dom": "ReactDOM",
-            "react-router-dom": "ReactRouterDOM",
           }),
         ],
       },

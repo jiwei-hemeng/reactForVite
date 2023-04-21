@@ -1,20 +1,48 @@
-import { useState } from "react";
-import reactLogo from "@/assets/react.svg";
-import viteLogo from "@/assets/vite.svg";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+// @ts-nocheck
+import React from "react";
+import { useMemo } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { connect } from "react-redux";
+import { router } from "@/router";
 import "@/App.css";
-import Expenses from "@/pages/expenses.jsx";
-import Invoices from "@/pages/invoices.jsx";
-
-function App() {
+function App({ token }) {
+  const isLogin = useMemo(() => !!token, [token]);
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Expenses />} />
-        <Route path="/invoices" element={<Invoices />} />
+        {router.map((item) => {
+          return (
+            <Route
+              key={item.path}
+              path={item.path}
+              element={
+                !item.auth || (item.auth && isLogin) ? (
+                  <item.element />
+                ) : (
+                  <Navigate to={`/login?url=${item.path}`} />
+                )
+              }
+            />
+          );
+        })}
       </Routes>
     </div>
   );
 }
-
-export default App;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    token: state.token,
+  };
+};
+// 操作共享的数据
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    add: () => {
+      dispatch({
+        type: "add",
+        value: 1,
+      });
+    },
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(App);
