@@ -5,8 +5,11 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 function Login({ setToken }) {
   const navigate = useNavigate();
   // const { url } = useParams()
-  const [getSearchArr] = useSearchParams();
-  const url = getSearchArr.getAll("url")[0];
+  const [ searchParams] = useSearchParams();
+  const url = searchParams.get("url");
+  for (var key of searchParams.keys()) {
+    console.log(key, searchParams.get(key));
+  }
   return (
     <main>
       <h2>Login</h2>
@@ -17,7 +20,11 @@ function Login({ setToken }) {
           sessionStorage.setItem("token", token);
           setTimeout(() => {
             if (url) {
-              navigate(url);
+              navigate(url, {
+                query: {
+                  id: 333
+                },
+              });
             } else {
               navigate("/");
             }
