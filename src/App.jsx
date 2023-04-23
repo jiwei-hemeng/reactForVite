@@ -1,9 +1,10 @@
 // @ts-nocheck
-import React from "react";
+import React, { Suspense } from "react";
 import { useMemo } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { router } from "@/router";
+import Loadding from "@/components/loadding";
 import "@/App.css";
 function App({ token }) {
   const isLogin = useMemo(() => !!token, [token]);
@@ -17,9 +18,13 @@ function App({ token }) {
               path={item.path}
               element={
                 !item.auth || (item.auth && isLogin) ? (
-                  <item.element />
+                  <Suspense fallback={<Loadding />}>
+                    <item.element />
+                  </Suspense>
                 ) : (
-                  <Navigate to={`/login?url=${item.path}`} />
+                  <Suspense fallback={<Loadding />}>
+                    <Navigate to={`/login?url=${item.path}`} />
+                  </Suspense>
                 )
               }
             />

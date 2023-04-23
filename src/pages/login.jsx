@@ -1,15 +1,12 @@
 // @ts-nocheck
 import React from "react";
 import { connect } from "react-redux";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useQuery from "@/hook/useQuery";
 function Login({ setToken }) {
   const navigate = useNavigate();
-  // const { url } = useParams()
-  const [ searchParams] = useSearchParams();
-  const url = searchParams.get("url");
-  for (var key of searchParams.keys()) {
-    console.log(key, searchParams.get(key));
-  }
+  const [query] = useQuery();
+  const { url } = query;
   return (
     <main>
       <h2>Login</h2>
@@ -17,18 +14,15 @@ function Login({ setToken }) {
         onClick={() => {
           const token = Date.now();
           setToken(token);
-          sessionStorage.setItem("token", token);
-          setTimeout(() => {
-            if (url) {
-              navigate(url, {
-                query: {
-                  id: 333
-                },
-              });
-            } else {
-              navigate("/");
-            }
-          }, 200);
+          if (url) {
+            navigate(url, {
+              query: {
+                id: 333,
+              },
+            });
+          } else {
+            navigate("/");
+          }
         }}
       >
         授权登录

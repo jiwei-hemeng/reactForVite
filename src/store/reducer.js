@@ -8,6 +8,7 @@ const reducerAction = {
   setToken: (state, action) => {
     const newToken = { ...state };
     newToken.token = action.value;
+    sessionStorage.setItem("token", action.value);
     return newToken;
   },
   setJoinTime: (state, action) => {
