@@ -10,7 +10,7 @@ export default ({ mode }) => {
       },
     },
     // base: mode === "production" ? "/vite-react-app" : "/",
-    base: mode === "production" ? "./" : "/vite-react-app",
+    base: mode === "production" ? "./" : "/reactForVite",
     plugins: [
       react(),
       visualizer({ open: true }),
