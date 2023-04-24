@@ -2,18 +2,13 @@
 import { lazy } from "react";
 export const router = [
   {
-    path: "/",
+    path: "home",
     auth: false,
     element: lazy(() => import("@/pages/expenses.jsx")),
   },
   {
-    path: "/invoices",
+    path: "invoices",
     auth: true,
     element: lazy(() => import("@/pages/invoices.jsx")),
-  },
-  {
-    path: "/login",
-    auth: false,
-    element: lazy(() => import("@/pages/login.jsx")),
   },
 ];
