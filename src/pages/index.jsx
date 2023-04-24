@@ -1,6 +1,7 @@
-import React from "react"
-import { Link, Outlet } from "react-router-dom"
-export default function Index () {
+// @ts-nocheck
+import React from "react";
+import { Link, Outlet } from "react-router-dom";
+export default function Index() {
   return (
     <div>
       <div>
@@ -9,6 +10,5 @@ export default function Index () {
       </div>
       <Outlet />
     </div>
-      
-  )
+  );
 }
