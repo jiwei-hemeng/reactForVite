@@ -4,7 +4,6 @@ import Child from "@/components/Child/index.jsx";
 export default function VDom() {
   const refChild = useRef(null)
   function addOne () {
-    console.log("refChild", refChild.current)
     refChild.current.addOne()
   }
   return (
