@@ -7,6 +7,7 @@ import { router } from "@/router";
 import Loadding from "@/components/loadding";
 import Index from "@/pages/index";
 import Home from "@/pages/expenses";
+import NotFound from "@/pages/NotFound"
 import Login from "@/pages/login";
 import "@/App.css";
 function App({ token }) {
@@ -54,6 +55,7 @@ function App({ token }) {
           })}
         </Route>
         <Route path="/login" element={<Login />}></Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );
