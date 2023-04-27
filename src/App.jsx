@@ -7,19 +7,22 @@ import Home from "@/pages/expenses";
 import NotFound from "@/pages/NotFound";
 import Login from "@/pages/login";
 import AuthRouter from "@/components/AuthRouter/index";
+import { getData } from "@/utils/webSql";
 import "@/App.css";
 function App() {
   const [routerList, setRouterList] = useState([]);
   async function getRouter() {
-    const resp = await fetch("http://localhost:3000/routerList");
-    const result = await resp.json();
-    const routerlist = result.map((item) => {
-      return {
-        ...item,
-        path: item.path.replace("/index/", ""),
+    const { list, total } = await getData({ tableName: "routerList" });
+    const routerlist = [];
+    for (let i = 0; i < list.length; i++) {
+      const item = list[i];
+      routerlist.push({
+        auth: item.auth === "1",
+        title: item.title,
+        path: item.path,
         element: router[item.name],
-      };
-    });
+      });
+    }
     setRouterList(routerlist);
   }
   useEffect(() => {

@@ -7,7 +7,6 @@ import store from "@/store/index.js";
 import App from "./App";
 import Loadding from "@/components/loadding";
 import "./index.css";
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <HashRouter>
     <Provider store={store}>
