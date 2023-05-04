@@ -9,6 +9,7 @@ export default function Index() {
         <Link className={styles.alink} to="/">首页</Link>
         <Link className={styles.alink} to="/index/invoices">Invoices</Link>
         <Link className={styles.alink} to="/index/vDom">vDom</Link>
+        <Link className={styles.alink} to="/index/Indexdb">Indexdb</Link>
       </div>
       <Outlet />
     </div>
