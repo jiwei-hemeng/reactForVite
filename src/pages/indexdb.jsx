@@ -1,14 +1,21 @@
 // @ts-nocheck
 import React, { useRef, useEffect } from "react";
-import IndexDb from "@/utils/indexdb";
+import indexdbHelper from "@/utils/indexdb";
 export default function Indexdb() {
-  async function getData () {
-    const users = await IndexDb.readAll("global");
-    const routers = await IndexDb.readAll("routers");
-    console.log(users, routers)
+  async function getData() {
+    const routers = await indexdbHelper.readAll("routers");
+    console.log(routers);
   }
   async function addData() {
-    await IndexDb.save({id: Date.now(), name: "name" + parseInt(Math.random() * 100), path: "path"}, "routers")
+    await indexdbHelper.save(
+      {
+        id: Date.now(),
+        name: "name" + parseInt(Math.random() * 100),
+        path: "path" + parseInt(Math.random() * 100),
+        moduleType: Math.round(Math.random())
+      },
+      "routers"
+    );
   }
   return (
     <div>

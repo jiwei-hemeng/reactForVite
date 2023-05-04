@@ -4,11 +4,11 @@ import ReactDOM from "react-dom/client";
 import { HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "@/store/index.js";
-import IndexDb from "@/utils/indexdb";
 import App from "./App";
 import Loadding from "@/components/loadding";
+import indexdbHelper from "@/utils/indexdb";
 import "./index.css";
-IndexDb.init().then(() => {
+indexdbHelper.init().then(() => {
   ReactDOM.createRoot(document.getElementById("root")).render(
     <HashRouter>
       <Provider store={store}>

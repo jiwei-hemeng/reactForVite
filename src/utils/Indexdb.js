@@ -1,56 +1,36 @@
 // @ts-nocheck
-// 默认数据库为myDB
-// 默认表为global
-// 记录的id不传，默认为global
-
 let db = null;
+const createStore = (db) => {
+  if (!db.objectStoreNames.contains("routers")) {
+    const routersStore = db.createObjectStore("routers", {
+      keyPath: "id",
+      autoIncrement: true,
+    });
+    routersStore.createIndex("name", "name", { unique: true });
+    routersStore.createIndex("path", "path", { unique: false });
+    routersStore.createIndex("moduleType", "moduleType", { unique: false });
+  }
+};
 const init = (tableName = "global", dbName = "myDB") => {
   // 使用 IndexedDB 的第一步是打开数据库
   const request = window.indexedDB.open(dbName, Number(Date.now()));
 
   return new Promise((resolve, reject) => {
     request.onerror = function (event) {
-      // 错误处理
-      console.log(" 打开数据库报错");
       reject();
     };
     request.onsuccess = function (event) {
       // 成功处理
       console.log("onsuccess");
       db = event.target.result;
-      if (!db.objectStoreNames.contains("global")) {
-        // 创建一个人的表，id为主键
-        db.createObjectStore("global", {
-          keyPath: "id",
-          autoIncrement: true,
-        });
-      }
-      if (!db.objectStoreNames.contains("routers")) {
-        db.createObjectStore("routers", {
-          keyPath: "id",
-          autoIncrement: true,
-        });
-      }
+      createStore(db);
       resolve(db);
     };
 
     // 通过 监听[数据库升级事件]拿到 数据库实例
     request.onupgradeneeded = function (event) {
       db = event.target.result;
-      console.log("onupgradeneeded");
-      if (!db.objectStoreNames.contains("global")) {
-        // 创建一个人的表，id为主键
-        db.createObjectStore("global", {
-          keyPath: "id",
-          autoIncrement: true,
-        });
-      }
-      if (!db.objectStoreNames.contains("routers")) {
-        db.createObjectStore("routers", {
-          keyPath: "id",
-          autoIncrement: true,
-        });
-      }
+      createStore(db);
       resolve(db);
     };
   });
@@ -158,6 +138,27 @@ const read = (id = "global", tableName = "global") => {
   });
 };
 
+const getDataByIndex = (
+  query = { key: "path", value: null },
+  tableName = "routers"
+) => {
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction([tableName], "readonly");
+    const store = transaction.objectStore(tableName);
+    const index = store.index(query.key);
+    const request = index.getAll(query.value);
+    request.onsuccess = function (e) {
+      const result = e.target.result;
+      console.log("result", result);
+      if (result) {
+        resolve(result);
+      } else {
+        reject();
+      }
+    };
+  });
+};
+
 // 查询所有(创建一个游标，类似JAVA里面的容器遍历的iterator()就是一个性能，估计发明IndexDB的作者可能的认真学过JAVA，这里纯属虚构，忽略，忽略...... )
 const readAll = (tableName = "global") => {
   return new Promise((resolve, reject) => {
@@ -181,8 +182,8 @@ const readAll = (tableName = "global") => {
 
 const indexdbHelper = {
   db, //数据库对象
+  getDataByIndex, // 通过索引查找
   init, // 初始化数据库连接
-  // createTable, // 创建表（一般无需使用）
   save, // 插入记录（参数不传，默认为myDb库下global表中的 id为global的记录）
   update, // 更新记录（参数不传，默认为myDb库下global表中的 id为global的记录）
   saveOrUpdate, // 新增或更新
