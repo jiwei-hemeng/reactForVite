@@ -6,7 +6,7 @@ const createStore = (db) => {
       keyPath: "id",
       autoIncrement: true,
     });
-    routersStore.createIndex("name", "name", { unique: true });
+    routersStore.createIndex("name", "name", { unique: false });
     routersStore.createIndex("path", "path", { unique: false });
     routersStore.createIndex("moduleType", "moduleType", { unique: false });
   }
@@ -30,6 +30,7 @@ const init = (tableName = "global", dbName = "myDB") => {
     // 通过 监听[数据库升级事件]拿到 数据库实例
     request.onupgradeneeded = function (event) {
       db = event.target.result;
+      console.log("onupgradeneeded");
       createStore(db);
       resolve(db);
     };
@@ -48,7 +49,8 @@ const init = (tableName = "global", dbName = "myDB") => {
 
 // 增
 const save = (data, tableName = "global") => {
-  !data.id && (data.id = "global");
+  !data.id && (data.id = Date.now());
+  console.log("插入的数据", data)
   const request = db
     .transaction([tableName], "readwrite")
     .objectStore(tableName)

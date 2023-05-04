@@ -9,7 +9,7 @@ export default function Indexdb() {
   async function addData() {
     await indexdbHelper.save(
       {
-        id: Date.now(),
+        // id: Date.now(),
         name: "name" + parseInt(Math.random() * 100),
         path: "path" + parseInt(Math.random() * 100),
         moduleType: Math.round(Math.random())
