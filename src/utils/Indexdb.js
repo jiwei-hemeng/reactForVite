@@ -18,13 +18,18 @@ const init = (tableName = "global", dbName = "myDB") => {
       // 成功处理
       console.log("onsuccess");
       db = event.target.result;
-      if (!db.objectStoreNames.contains(tableName)) {
+      if (!db.objectStoreNames.contains("global")) {
         // 创建一个人的表，id为主键
-        const objectStore = db.createObjectStore(tableName, {
+        db.createObjectStore("global", {
           keyPath: "id",
           autoIncrement: true,
         });
-        objectStore.createIndex('router', 'router', { unique: false })
+      }
+      if (!db.objectStoreNames.contains("routers")) {
+        db.createObjectStore("routers", {
+          keyPath: "id",
+          autoIncrement: true,
+        });
       }
       resolve(db);
     };
@@ -33,13 +38,18 @@ const init = (tableName = "global", dbName = "myDB") => {
     request.onupgradeneeded = function (event) {
       db = event.target.result;
       console.log("onupgradeneeded");
-      if (!db.objectStoreNames.contains(tableName)) {
+      if (!db.objectStoreNames.contains("global")) {
         // 创建一个人的表，id为主键
-        const objectStore = db.createObjectStore(tableName, {
+        db.createObjectStore("global", {
           keyPath: "id",
           autoIncrement: true,
         });
-        objectStore.createIndex('name', 'name', { unique: false })
+      }
+      if (!db.objectStoreNames.contains("routers")) {
+        db.createObjectStore("routers", {
+          keyPath: "id",
+          autoIncrement: true,
+        });
       }
       resolve(db);
     };

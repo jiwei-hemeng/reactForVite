@@ -4,10 +4,11 @@ import IndexDb from "@/utils/indexdb";
 export default function Indexdb() {
   async function getData () {
     const users = await IndexDb.readAll("global");
-    console.log(users)
+    const routers = await IndexDb.readAll("routers");
+    console.log(users, routers)
   }
   async function addData() {
-    await IndexDb.save({id: Date.now(), name: "name", path: "path"})
+    await IndexDb.save({id: Date.now(), name: "name" + parseInt(Math.random() * 100), path: "path"}, "routers")
   }
   return (
     <div>
