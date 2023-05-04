@@ -13,7 +13,7 @@ const createStore = (db) => {
 };
 const init = (tableName = "global", dbName = "myDB") => {
   // 使用 IndexedDB 的第一步是打开数据库
-  const request = window.indexedDB.open(dbName, Number(Date.now()));
+  const request = window.indexedDB.open(dbName);
 
   return new Promise((resolve, reject) => {
     request.onerror = function (event) {
@@ -49,8 +49,6 @@ const init = (tableName = "global", dbName = "myDB") => {
 
 // 增
 const save = (data, tableName = "global") => {
-  !data.id && (data.id = Date.now());
-  console.log("插入的数据", data)
   const request = db
     .transaction([tableName], "readwrite")
     .objectStore(tableName)
