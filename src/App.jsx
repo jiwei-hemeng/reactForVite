@@ -51,6 +51,7 @@ function App() {
   }
   useEffect(() => {
     fetchRouter();
+    getRouter();
   }, []);
   return (
     <div className="App">
