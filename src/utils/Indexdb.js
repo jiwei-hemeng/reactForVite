@@ -180,8 +180,54 @@ const readAll = (tableName = "global") => {
   });
 };
 
+function cursorGetDataByIndexAndPage(
+  storeName,
+  indexName,
+  indexValue,
+  page,
+  pageSize
+) {
+  return new Promise((resolve, reject) => {
+    let list = [];
+    let counter = 0; // 计数器
+    let advanced = true; // 是否跳过多少条查询
+    // 仓库对象
+    const store = db.transaction(storeName, "readwrite").objectStore(storeName);
+    const request = store
+      .index(indexName) // 索引对象
+      .openCursor(IDBKeyRange.only(indexValue)); // 指针对象
+    request.onsuccess = function (e) {
+      let cursor = e.target.result;
+      if (page > 1 && advanced) {
+        advanced = false;
+        cursor.advance((page - 1) * pageSize); // 跳过多少条
+        return;
+      }
+      if (cursor) {
+        // 必须要检查
+        list.push(cursor.value);
+        counter++;
+        if (counter < pageSize) {
+          cursor.continue(); // 遍历了存储对象中的所有内容
+        } else {
+          cursor = null;
+          resolve(list);
+          console.log("分页查询结果", list);
+        }
+      } else {
+        resolve(list);
+        console.log("分页查询结果", list);
+      }
+    };
+    request.onerror = function (e) {
+      reject(e);
+    };
+  });
+}
+
 const indexdbHelper = {
   db, //数据库对象
+  cursorGetDataByIndexAndPage,
   getDataByIndex, // 通过索引查找
   init, // 初始化数据库连接
   save, // 插入记录（参数不传，默认为myDb库下global表中的 id为global的记录）
