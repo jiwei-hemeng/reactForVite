@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import store from "@/store/index.js";
 import App from "./App";
 import Loadding from "@/components/loadding";
-import indexdbHelper from "@/utils/indexdb";
+import indexdbHelper from "@/utils/Indexdb.js";
 import "./index.css";
 indexdbHelper.init().then(() => {
   ReactDOM.createRoot(document.getElementById("root")).render(
