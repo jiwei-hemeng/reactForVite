@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { useRef, useEffect } from "react";
-import indexdbHelper from "@/utils/indexdb";
+import indexdbHelper from "@/utils/Indexdb.js";
 export default function Indexdb() {
   async function getData() {
     const routers = await indexdbHelper.readAll("routers");
