@@ -4,7 +4,7 @@ import indexdbHelper from "@/utils/Indexdb.js";
 export default function Indexdb() {
   async function getData() {
     const routers = await indexdbHelper.readAll("routers");
-    console.log(routers);
+    console.log("routers", routers);
   }
   async function addData() {
     await indexdbHelper.save(
