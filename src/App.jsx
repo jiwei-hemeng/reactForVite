@@ -42,7 +42,6 @@ function App() {
         indexdbHelper.save({ ...item, moduleType: "routersList" }, "routers");
       });
     } catch (error) {
-    } finally {
       getRouter();
     }
   }
