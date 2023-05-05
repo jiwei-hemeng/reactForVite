@@ -138,15 +138,12 @@ const read = (id = "global", tableName = "global") => {
   });
 };
 
-const getDataByIndex = (
-  query = { key: "path", value: null },
-  tableName = "routers"
-) => {
+function getDataByIndex(storeName, indexName, indexValue) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([tableName], "readonly");
-    const store = transaction.objectStore(tableName);
-    const index = store.index(query.key);
-    const request = index.getAll(query.value);
+    const transaction = db.transaction([storeName], "readonly");
+    const store = transaction.objectStore(storeName);
+    const index = store.index(indexName);
+    const request = index.getAll(indexValue);
     request.onsuccess = function (e) {
       const result = e.target.result;
       console.log("result", result);
@@ -158,6 +155,31 @@ const getDataByIndex = (
     };
   });
 };
+
+function removeDataByIndex(storeName, indexName, indexValue) {
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction([storeName], "readwrite");
+    const store = transaction.objectStore(storeName);
+    const index = store.index(indexName);
+    const request = index.getAll(indexValue);
+    request.onsuccess = function (e) {
+      const result = e.target.result;
+      let all = [];
+      result.map((item) => {
+        if ((item[indexName] = indexValue)) {
+          all.push(remove(item.id, storeName));
+        }
+      });
+      Promise.all(all)
+        .then(() => {
+          resolve();
+        })
+        .catch(() => {
+          reject();
+        });
+    };
+  });
+}
 
 // 查询所有(创建一个游标，类似JAVA里面的容器遍历的iterator()就是一个性能，估计发明IndexDB的作者可能的认真学过JAVA，这里纯属虚构，忽略，忽略...... )
 const readAll = (tableName = "global") => {
@@ -229,6 +251,7 @@ const indexdbHelper = {
   db, //数据库对象
   cursorGetDataByIndexAndPage,
   getDataByIndex, // 通过索引查找
+  removeDataByIndex, // 通过索引删除
   init, // 初始化数据库连接
   save, // 插入记录（参数不传，默认为myDb库下global表中的 id为global的记录）
   update, // 更新记录（参数不传，默认为myDb库下global表中的 id为global的记录）

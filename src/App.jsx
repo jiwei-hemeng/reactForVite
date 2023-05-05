@@ -7,12 +7,16 @@ import Home from "@/pages/expenses";
 import NotFound from "@/pages/NotFound";
 import Login from "@/pages/login";
 import AuthRouter from "@/components/AuthRouter/index";
-import { getData } from "@/utils/webSql";
+import indexdbHelper from "@/utils/Indexdb.js";
 import "@/App.css";
 function App() {
   const [routerList, setRouterList] = useState([]);
   async function getRouter() {
-    const { list, total } = await getData({ tableName: "routerList" });
+    const list = await indexdbHelper.getDataByIndex(
+      "routers",
+      "moduleType",
+      "routersList"
+    );
     const routerlist = [];
     for (let i = 0; i < list.length; i++) {
       const item = list[i];
@@ -25,8 +29,25 @@ function App() {
     }
     setRouterList(routerlist);
   }
+  async function fetchRouter() {
+    try {
+      const resp = await fetch("http://localhost:3000/routerList");
+      const routers = await resp.json();
+      await indexdbHelper.removeDataByIndex(
+        "routers",
+        "moduleType",
+        "routersList"
+      );
+      routers.map((item) => {
+        indexdbHelper.save({ ...item, moduleType: "routersList" }, "routers");
+      });
+    } catch (error) {
+    } finally {
+      getRouter();
+    }
+  }
   useEffect(() => {
-    getRouter();
+    fetchRouter();
   }, []);
   return (
     <div className="App">
