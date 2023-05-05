@@ -11,12 +11,7 @@ import indexdbHelper from "@/utils/Indexdb.js";
 import "@/App.css";
 function App() {
   const [routerList, setRouterList] = useState([]);
-  async function getRouter() {
-    const list = await indexdbHelper.getDataByIndex(
-      "routers",
-      "moduleType",
-      "routersList"
-    );
+  function setRouter(list) {
     const routerlist = [];
     for (let i = 0; i < list.length; i++) {
       const item = list[i];
@@ -28,6 +23,14 @@ function App() {
       });
     }
     setRouterList(routerlist);
+  }
+  async function getRouter() {
+    const list = await indexdbHelper.getDataByIndex(
+      "routers",
+      "moduleType",
+      "routersList"
+    );
+    setRouter(list)
   }
   async function fetchRouter() {
     try {
@@ -41,6 +44,7 @@ function App() {
       routers.map((item) => {
         indexdbHelper.save({ ...item, moduleType: "routersList" }, "routers");
       });
+      setRouter(routers)
     } catch (error) {
       getRouter();
     }
