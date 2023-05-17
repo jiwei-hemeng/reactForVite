@@ -5,9 +5,12 @@ import { HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "@/store/index.js";
 import App from "./App";
+import dayjs from "dayjs";
+import ZHCN from "dayjs/locale/zh-cn";
 import Loadding from "@/components/loadding";
 import indexdbHelper from "@/utils/Indexdb.js";
 import "./index.css";
+dayjs.locale(ZHCN)
 indexdbHelper.init().then(() => {
   ReactDOM.createRoot(document.getElementById("root")).render(
     <HashRouter>
