@@ -30,11 +30,11 @@ function App() {
       "moduleType",
       "routersList"
     );
-    setRouter(list)
+    setRouter(list);
   }
   async function fetchRouter() {
     try {
-      const resp = await fetch("http://localhost:3000/routerList");
+      const resp = await fetch("/router.json");
       const routers = await resp.json();
       await indexdbHelper.removeDataByIndex(
         "routers",
@@ -44,7 +44,7 @@ function App() {
       routers.map((item) => {
         indexdbHelper.save({ ...item, moduleType: "routersList" }, "routers");
       });
-      setRouter(routers)
+      setRouter(routers);
     } catch (error) {
       getRouter();
     }

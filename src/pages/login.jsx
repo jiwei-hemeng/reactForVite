@@ -1,10 +1,12 @@
 // @ts-nocheck
 import React from "react";
-import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useQuery from "@/hook/useQuery";
-function Login({ setToken }) {
+import { useSelector, useDispatch } from "react-redux";
+import { setToken } from "@/store/features/userInfo";
+export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [query] = useQuery();
   const { url } = query;
   return (
@@ -13,7 +15,7 @@ function Login({ setToken }) {
       <button
         onClick={() => {
           const token = Date.now();
-          setToken(token);
+          dispatch(setToken(token));
           if (url) {
             navigate(url, {
               query: {
@@ -30,18 +32,3 @@ function Login({ setToken }) {
     </main>
   );
 }
-const mapStateToProps = (state, ownProps) => {
-  return {};
-};
-// 操作共享的数据
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    setToken: (token) => {
-      dispatch({
-        type: "setToken",
-        value: token,
-      });
-    },
-  };
-};
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
