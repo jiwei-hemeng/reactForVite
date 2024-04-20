@@ -146,7 +146,6 @@ function getDataByIndex(storeName, indexName, indexValue) {
     const request = index.getAll(indexValue);
     request.onsuccess = function (e) {
       const result = e.target.result;
-      console.log("result", result);
       if (result) {
         resolve(result);
       } else {

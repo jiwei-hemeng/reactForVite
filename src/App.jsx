@@ -25,32 +25,35 @@ function App() {
     setRouterList(routerlist);
   }
   async function getRouter() {
-    const list = await indexdbHelper.getDataByIndex(
-      "routers",
-      "moduleType",
-      "routersList"
-    );
-    setRouter(list);
-  }
-  async function fetchRouter() {
     try {
-      const resp = await fetch("/router.json");
-      const routers = await resp.json();
-      await indexdbHelper.removeDataByIndex(
+      const list = await indexdbHelper.getDataByIndex(
         "routers",
         "moduleType",
         "routersList"
       );
-      routers.map((item) => {
-        indexdbHelper.save({ ...item, moduleType: "routersList" }, "routers");
-      });
-      setRouter(routers);
+
+      if (list.length) {
+        setRouter(list);
+      }
     } catch (error) {
-      getRouter();
+      console.error(error);
+      fetchRouter();
     }
   }
+  async function fetchRouter() {
+    const resp = await fetch("/router.json");
+    const routers = await resp.json();
+    await indexdbHelper.removeDataByIndex(
+      "routers",
+      "moduleType",
+      "routersList"
+    );
+    routers.map((item) => {
+      indexdbHelper.save({ ...item, moduleType: "routersList" }, "routers");
+    });
+    setRouter(routers);
+  }
   useEffect(() => {
-    fetchRouter();
     getRouter();
   }, []);
   return (
