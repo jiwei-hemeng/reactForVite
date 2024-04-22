@@ -8,6 +8,7 @@ import NotFound from "@/pages/NotFound";
 import Login from "@/pages/login";
 import AuthRouter from "@/components/AuthRouter/index";
 import indexdbHelper from "@/utils/Indexdb.js";
+import { baseUrl } from "@/utils/baseUrl";
 import "@/App.css";
 function App() {
   const [routerList, setRouterList] = useState([]);
@@ -41,7 +42,8 @@ function App() {
     }
   }
   async function fetchRouter() {
-    const resp = await fetch("/router.json");
+    console.log("baseUrl", baseUrl);
+    const resp = await fetch(baseUrl + "router.json");
     const routers = await resp.json();
     await indexdbHelper.removeDataByIndex(
       "routers",
@@ -54,6 +56,7 @@ function App() {
     setRouter(routers);
   }
   useEffect(() => {
+    console.log("import.meta", import.meta.env);
     getRouter();
   }, []);
   return (
