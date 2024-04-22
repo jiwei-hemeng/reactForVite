@@ -11,20 +11,17 @@ export default ({ mode }) => {
     },
     // base: mode === "production" ? "/vite-react-app" : "/",
     base: "./",
-    plugins: [
-      react(),
-      visualizer({ open: true }),
-    ],
+    plugins: [react(), visualizer({ open: true })],
     build: {
-      rollupOptions: {
-        external: ["react", "react-dom"],
-        plugins: [
-          externalGlobals({
-            react: "React",
-            "react-dom": "ReactDOM",
-          }),
-        ],
-      },
+      // rollupOptions: {
+      //   external: ["react", "react-dom"],
+      //   plugins: [
+      //     externalGlobals({
+      //       react: "React",
+      //       "react-dom": "ReactDOM",
+      //     }),
+      //   ],
+      // },
     },
   };
 };
