@@ -1,0 +1,1 @@
+import{r as n,j as t,a}from"./index-65954a11.js";function i(e,r){const[d,u]=n.useState(0);function o(){u(s=>s+1)}return n.useImperativeHandle(r,()=>({addOne:o})),t("div",{children:d})}const c=n.forwardRef(i);function l(){const e=n.useRef(null);function r(){e.current.addOne()}return a("div",{children:[t(c,{ref:e}),t("button",{onClick:r,children:"点位加一"})]})}export{l as default};
