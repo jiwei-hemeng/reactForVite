@@ -56,7 +56,6 @@ function App() {
     setRouter(routers);
   }
   useEffect(() => {
-    console.log("import.meta", import.meta.env);
     getRouter();
   }, []);
   return (
