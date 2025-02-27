@@ -1,0 +1,1 @@
+import{j as n,a as e,r as t}from"./index-91b021b3.js";function u(){return n("main",{children:[e("h2",{children:"Invoices"}),e(i,{})]})}function i(){const[r,s]=t.useState(0);return t.useEffect(()=>{const a=setInterval(()=>{s(c=>c+1)},1e3);return()=>clearInterval(a)},[]),n("div",{children:["数字: ",r]})}export{u as default};
