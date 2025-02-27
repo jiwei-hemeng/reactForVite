@@ -140,20 +140,24 @@ const read = (id = "global", tableName = "global") => {
 
 function getDataByIndex(storeName, indexName, indexValue) {
   return new Promise((resolve, reject) => {
-    const transaction = db.transaction([storeName], "readonly");
-    const store = transaction.objectStore(storeName);
-    const index = store.index(indexName);
-    const request = index.getAll(indexValue);
-    request.onsuccess = function (e) {
-      const result = e.target.result;
-      if (result) {
-        resolve(result);
-      } else {
-        reject();
-      }
-    };
+    try {
+      const transaction = db.transaction([storeName], "readonly");
+      const store = transaction.objectStore(storeName);
+      const index = store.index(indexName);
+      const request = index.getAll(indexValue);
+      request.onsuccess = function (e) {
+        const result = e.target.result;
+        if (result) {
+          resolve(result);
+        } else {
+          reject();
+        }
+      };
+    } catch (error) {
+      reject(error);
+    }
   });
-};
+}
 
 function removeDataByIndex(storeName, indexName, indexValue) {
   return new Promise((resolve, reject) => {
