@@ -1,0 +1,7 @@
+.buttonGroup {
+  display: flex;
+  margin-top: 10px;
+  .buttonItem {
+    margin-right: 20px;
+  }
+}
