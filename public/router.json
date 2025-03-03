@@ -16,5 +16,11 @@
     "name": "Indexdb",
     "title": "Indexdb 学习",
     "auth": true
+  },
+  {
+    "path": "/index/three",
+    "name": "Three",
+    "title": "ThreeJs 学习",
+    "auth": false
   }
 ]
