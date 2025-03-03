@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
-import styles from "./three.module.css";
+import styles from "./index.module.css";
 
 export default function Three() {
   const rendererDOM = useRef();

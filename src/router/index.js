@@ -5,5 +5,5 @@ export const router = {
   vDom: lazy(() => import("@/pages/vDom.jsx")),
   Indexdb: lazy(() => import("@/pages/indexdb.jsx")),
   share: lazy(() => import("@/pages/share.jsx")),
-  Three: lazy(() => import("@/pages/three.jsx")),
+  Three: lazy(() => import("@/pages/three")),
 };

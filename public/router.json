@@ -22,5 +22,11 @@
     "name": "Three",
     "title": "ThreeJs 学习",
     "auth": false
+  },
+  {
+    "path": "/index/capsuleGeometry",
+    "name": "capsuleGeometry",
+    "title": "ThreeJs 胶囊 学习",
+    "auth": false
   }
 ]
